@@ -27,7 +27,8 @@ namespace UserSystem.Controllers
             
             return Ok(User);
         }
-
+        
+        // ReadByID Function
         [HttpGet("Users/{id}")]
         public async Task<ActionResult<UsersEntity>> ReadByID(int id)
         {
@@ -37,5 +38,23 @@ namespace UserSystem.Controllers
             
             return User;
         }
+        
+        // Update User Async Function
+        [HttpPost("Users/Update/{id}")]
+        public async Task<ActionResult<UsersEntity>> UpdateUser(UsersEntity dto,int id)
+        {
+            UsersEntity User =  dbContext.Users.FirstOrDefault(x => x.Id == id);
+
+            if (User == null) return NotFound();
+
+            User.Username = dto.Username;
+            User.Password = dto.Password;
+            User.Email = dto.Email;
+
+            await dbContext.SaveChangesAsync();
+            
+            return Ok(User);
+        }
+        
     }
 }
