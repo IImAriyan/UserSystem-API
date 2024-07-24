@@ -10,12 +10,7 @@ namespace UserSystem.Controllers
     [ApiController]
     public class UserSystem(DbContextApp dbContext) : ControllerBase
     {
-        // Show Users Async Function
-        [HttpGet("Users/list")]
-        public  ActionResult<IEnumerable<UsersEntity>> ShowUsers()
-        {
-            return  dbContext.Users;
-        }
+
         
         // Add User Function
         [HttpPost("Users/Add")]
@@ -28,6 +23,13 @@ namespace UserSystem.Controllers
             return Ok(User);
         }
         
+        // Show Users Async Function
+        [HttpGet("Users/list")]
+        public  ActionResult<IEnumerable<UsersEntity>> ShowUsers()
+        {
+            return  dbContext.Users;
+        }
+        
         // ReadByID Function
         [HttpGet("Users/{id}")]
         public async Task<ActionResult<UsersEntity>> ReadByID(int id)
@@ -37,6 +39,21 @@ namespace UserSystem.Controllers
             if (User == null) return NotFound();
             
             return User;
+        }
+        
+        // َDelete Async Function 
+        
+        [HttpGet("Users/Delete/{id}")]
+        public async Task<ActionResult<UsersEntity>> Delete(int id)
+        {
+            UsersEntity User =  dbContext.Users.FirstOrDefault(x => x.Id == id);
+
+            if (User == null) return NotFound();
+            
+            dbContext.Remove(User);
+            await dbContext.SaveChangesAsync();
+            
+            return Ok(User);
         }
         
         // Update User Async Function
@@ -55,6 +72,8 @@ namespace UserSystem.Controllers
             
             return Ok(User);
         }
+        
+
         
     }
 }
