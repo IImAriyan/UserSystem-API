@@ -27,5 +27,15 @@ namespace UserSystem.Controllers
             
             return Ok(User);
         }
+
+        [HttpGet("Users/{id}")]
+        public async Task<ActionResult<UsersEntity>> ReadByID(int id)
+        {
+            UsersEntity User =  dbContext.Users.FirstOrDefault(x => x.Id == id);
+
+            if (User == null) return NotFound();
+            
+            return User;
+        }
     }
 }
