@@ -1,8 +1,16 @@
+using Microsoft.EntityFrameworkCore;
+using UserSystem.Entitys;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 builder.Services.AddSwaggerGen();
+builder.Services.AddDbContext<DbContextApp>(option =>
+{
+    option.UseSqlServer(
+        "Data Source=ARIYAN;Initial Catalog=users_DB;Integrated Security = true;TrustServerCertificate=True");
+});
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
